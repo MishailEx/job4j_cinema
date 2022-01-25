@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script
+            src="https://code.jquery.com/jquery-3.6.0.js"
+            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+            crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Hello, world!</title>
+</head>
+<script>
+    $(document).ready(function () {
+        (function worker() {
+            $.ajax({
+                type: 'GET',
+                crossdomain: true,
+                url: 'http://localhost:8080/job4j_cinema/hall',
+                dataType: 'json'
+            }).done(function (data) {
+                $('#row1').html('<th>1</th>')
+                $('#row2').html('<th>2</th>')
+                $('#row3').html('<th>3</th>')
+                for (var onePlace of data) {
+                    let place = JSON.stringify(onePlace);
+                    if (onePlace.row == 1) {
+                        if (onePlace.available == true) {
+                            $('#row1').append(`<td><input type="radio" name="place" value= ${place} checked>
+                        Ряд ${onePlace.row}, Место ${onePlace.cell}</td></li>`)
+                        } else {
+                            $('#row1').append(`<td>Ряд ${onePlace.row}, Место ${onePlace.cell} - купленно</td></li>`)
+                        }
+                    }
+                    if (onePlace.row == 2) {
+                        if (onePlace.available == true) {
+                            $('#row2').append(`<td><input type="radio" name="place" value= ${place}>
+                        Ряд ${onePlace.row}, Место ${onePlace.cell}</td></li>`)
+                        } else {
+                            $('#row2').append(`<td>Ряд ${onePlace.row}, Место ${onePlace.cell} - купленно</td></li>`)
+                        }
+                    }
+                    if (onePlace.row == 3) {
+                        if (onePlace.available == true) {
+                            $('#row3').append(`<td><input type="radio" name="place" value= ${place}>
+                        Ряд ${onePlace.row}, Место ${onePlace.cell}</td></li>`)
+                        } else {
+                            $('#row3').append(`<td>Ряд ${onePlace.row}, Место ${onePlace.cell} - купленно</td></li>`)
+                        }
+                    }
+                }
+                setTimeout(worker, 5000);
+            }).fail(function (err) {
+                console.log(err);
+            });
+        })();
+    });
+</script>
+<body>
+
+<div class="container">
+    <form  action="buy" method="post" >
+        <div class="row pt-3">
+            <h4>
+                Бронирование месте на сеанс
+            </h4>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th style="width: 120px;">Ряд / Место</th>
+                    <th>1</th>
+                    <th>2</th>
+                    <th>3</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr id="row1">
+                    <th>1</th>
+                </tr>
+                <tr id="row2">
+                    <th>2</th>
+                </tr>
+                <tr id="row3">
+                    <th>3</th>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row float-right">
+            <button type="submit" class="btn btn-success">Оплатить</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
